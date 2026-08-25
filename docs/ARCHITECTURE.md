@@ -28,11 +28,11 @@ sequenceDiagram
     A->>D: 查询用户并校验密码摘要
     A->>D: 写入会话令牌摘要
     A-->>C: HttpOnly session cookie + color
-    C->>M: GET /api/messages?room=fitness
+    C->>M: GET /api/messages?community=fitness
     M->>D: 校验会话与房间，读取最近 100 条
     M-->>C: 最小公开消息结构
     loop Incremental polling
-        C->>M: GET room + after=lastId
+        C->>M: GET community + after=lastId
         M->>D: WHERE id > after ORDER BY created_at, id
         M-->>C: 仅返回新增消息
     end
@@ -40,12 +40,12 @@ sequenceDiagram
 
 ## 4. 消息顺序与隔离
 
-- 房间名称必须通过服务端白名单，防止任意频道写入。
+- community 参数必须通过服务端白名单，防止任意频道写入。
 - 首次加载查询最近 100 条，数据库降序读取后在响应前恢复正序。
 - 增量加载使用最后一条消息 ID 作为游标，只读取 **id > after** 的记录。
 - 结果使用 **created_at ASC, id ASC** 排序；相同时间戳仍由自增 ID 决定稳定先后。
 - 客户端按消息 ID 合并，避免轮询重叠造成重复渲染。
-- 每次查询都携带 room 条件，不同社区的数据流相互隔离。
+- 每次查询都携带 community 条件，不同社区的数据流相互隔离。
 
 当前实现采用轻量轮询，适合项目早期用户规模。高并发阶段可迁移至 WebSocket 与 Durable Objects，由单房间对象维护连接和广播顺序。
 
@@ -53,28 +53,33 @@ sequenceDiagram
 
 ~~~mermaid
 erDiagram
-    USERS ||--o{ SESSIONS : owns
+    ACCOUNTS ||--|| USERS : owns_identity
+    ACCOUNTS ||--o{ AUTH_SESSIONS : owns
     USERS ||--o{ MESSAGES : sends
 
-    USERS {
-        integer id PK
+    ACCOUNTS {
+        text user_id PK
         text email UK
         text password_hash
-        text password_salt
+        integer created_at
+        integer updated_at
+    }
+    USERS {
+        text user_id PK
         text color
         integer created_at
+        integer updated_at
     }
-    SESSIONS {
-        integer id PK
-        integer user_id FK
-        text token_hash UK
+    AUTH_SESSIONS {
+        text token_hash PK
+        text user_id FK
         integer expires_at
         integer created_at
     }
     MESSAGES {
         integer id PK
-        integer user_id FK
-        text room
+        text user_id FK
+        text community
         text body
         integer created_at
     }
@@ -84,7 +89,7 @@ erDiagram
 
 ### 颜色属于账号，而不是单条消息
 
-颜色保存在用户记录中，确保同一账号跨房间仍保持一致辨识；公开响应只返回颜色，不返回 user_id 或邮箱。
+邮箱凭据保存在 accounts，颜色身份保存在 users。两者通过同一个不可公开的 user_id 关联，确保同一账号跨房间保持一致辨识；公开响应只返回颜色，不返回 user_id 或邮箱。
 
 ### 服务端时间是唯一顺序来源
 
