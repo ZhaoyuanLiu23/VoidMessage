@@ -1,0 +1,58 @@
+name: Bug 报告
+description: 报告可复现的功能、界面或兼容性问题
+title: "[Bug] "
+body:
+  - type: markdown
+    attributes:
+      value: 感谢反馈。请勿提交邮箱、密码、Cookie、令牌或真实私聊内容。
+  - type: textarea
+    id: summary
+    attributes:
+      label: 问题概述
+      description: 用一句话说明发生了什么。
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: 复现步骤
+      placeholder: |
+        1. 进入……
+        2. 点击……
+        3. 观察到……
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 预期行为
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: 环境
+      placeholder: Windows 11 / Chrome 版本 / 手机型号与系统
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: 影响区域
+      options:
+        - 注册或登录
+        - 板块与房间导航
+        - 消息发送或同步
+        - 视频与使用指南
+        - 响应式界面
+        - 其他
+    validations:
+      required: true
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: 隐私确认
+      options:
+        - label: 我已移除截图和日志中的敏感信息。
+          required: true
+

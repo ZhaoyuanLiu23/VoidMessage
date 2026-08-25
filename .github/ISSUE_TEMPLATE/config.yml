@@ -1,0 +1,6 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 安全问题
+    url: https://github.com/ZhaoyuanLiu23/VoidMessage/security
+    about: 请通过私密渠道报告安全漏洞，不要公开披露可利用细节。
+

@@ -1,0 +1,37 @@
+name: 功能建议
+description: 提议一个符合匿名与隐私原则的改进
+title: "[Feature] "
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: 用户问题
+      description: 这个功能要解决什么真实场景？
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: 建议方案
+      description: 描述交互、数据和边界，而不只是界面外观。
+    validations:
+      required: true
+  - type: textarea
+    id: privacy
+    attributes:
+      label: 匿名与隐私影响
+      description: 是否新增身份字段、数据采集、追踪或治理风险？
+    validations:
+      required: true
+  - type: dropdown
+    id: priority
+    attributes:
+      label: 价值判断
+      options:
+        - 解决阻断问题
+        - 显著改善核心体验
+        - 小幅体验优化
+        - 长期探索
+    validations:
+      required: true
+
