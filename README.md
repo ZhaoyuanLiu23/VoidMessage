@@ -308,20 +308,9 @@ VoidMessage/
 
 ## 09 / COMMUNITY
 
-欢迎加入 VOID MESSAGE 用户交流群，分享你的颜色、想法与反馈。
+### 群
 
 <p align="center">
-  <img src="./public/community-qr.png" width="200" alt="VOID MESSAGE 交流群二维码" />
-  <br />
-  <sub>微信扫码 / 长按识别 · 暗室不暗，对话常在</sub>
+  <img src="./public/community-qr.png" width="220" alt="VOID MESSAGE 用户群" />
 </p>
-
-> 目前群组采用邀请制，如需入群请通过 [邮件](mailto:void-message@example.com) 联系管理员。
-
-### 群内日常
-
-![群聊截图](./public/community-screenshot.png)
-
-*截图仅供参考，实际交流以颜色、兴趣和真话为主。*
-
 
